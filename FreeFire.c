@@ -4,8 +4,9 @@
 #include <stdbool.h>
 
 // Código da Ilha – Edição Free Fire
-// Nível: Novato
-// Este programa simula o gerenciamento básico de uma mochila com itens coletados durante a fuga de uma ilha.
+// Nível: Aventureiro
+// Este programa simula o gerenciamento de uma mochila com itens coletados durante a fuga de uma ilha.
+// Adiciona busca sequencial por nome.
 
 #define MAX_ITENS 10
 #define TAM_NOME 50
@@ -37,13 +38,14 @@ void limparTela() {
 void exibirMenu() {
     printf("\n========================================\n");
     printf("   CODIGO DA ILHA - EDICAO FREE FIRE\n");
-    printf("   Nivel: NOVATO - Inventario Basico\n");
+    printf("   Nivel: AVENTUREIRO - Mochila com Busca\n");
     printf("========================================\n");
     printf("Itens na mochila: %d/%d\n", numItens, MAX_ITENS);
     printf("========================================\n");
     printf("1. Adicionar um item\n");
     printf("2. Remover um item\n");
     printf("3. Listar todos os itens\n");
+    printf("4. Buscar item por nome\n");
     printf("0. Sair\n");
     printf("========================================\n");
     printf("Escolha uma opcao: ");
@@ -138,6 +140,46 @@ void listarItens() {
     printf("========================================\n");
 }
 
+// buscarItemPorNome():
+// Realiza busca sequencial por nome.
+// Se encontrado, exibe os dados do item.
+// Caso contrário, informa que não encontrou o item.
+void buscarItemPorNome() {
+    if (numItens == 0) {
+        printf("\n[INFO] Mochila vazia! Nenhum item para buscar.\n");
+        return;
+    }
+
+    char nomeBusca[TAM_NOME];
+    printf("\n--- BUSCAR ITEM POR NOME ---\n");
+    printf("Digite o nome do item a ser buscado: ");
+    scanf(" %[^\n]", nomeBusca);
+
+    bool encontrado = false;
+    int indice = -1;
+
+    // Busca sequencial
+    for (int i = 0; i < numItens; i++) {
+        if (strcmp(mochila[i].nome, nomeBusca) == 0) {
+            encontrado = true;
+            indice = i;
+            break;
+        }
+    }
+
+    if (encontrado) {
+        printf("\n========================================\n");
+        printf("   ITEM ENCONTRADO!\n");
+        printf("========================================\n");
+        printf("Nome:       %s\n", mochila[indice].nome);
+        printf("Tipo:       %s\n", mochila[indice].tipo);
+        printf("Quantidade: %d\n", mochila[indice].quantidade);
+        printf("========================================\n");
+    } else {
+        printf("\n[ERRO] Item '%s' nao encontrado na mochila.\n", nomeBusca);
+    }
+}
+
 int main() {
     int opcao;
 
@@ -154,6 +196,9 @@ int main() {
                 break;
             case 3:
                 listarItens();
+                break;
+            case 4:
+                buscarItemPorNome();
                 break;
             case 0:
                 printf("\n[INFO] Saindo do programa. Boa sorte na ilha!\n");
